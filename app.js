@@ -78,7 +78,7 @@ function parseCsv(text) {
   return rows;
 }
 
-function readEntries(csv) {
+function readEntries(csv, expectedLevel) {
   const [header, ...data] = parseCsv(csv);
   if (!header || header[0]?.trim().toLowerCase() !== "word" || header[1]?.trim().toLowerCase() !== "category" || header[2]?.trim().toLowerCase() !== "level") {
     throw new Error("The CSV must start with word,category,level.");
@@ -87,8 +87,8 @@ function readEntries(csv) {
     word: word.trim().toUpperCase(),
     category: category.trim(),
     level: level.trim().toUpperCase(),
-  })).filter(entry => /^[A-Z]+$/.test(entry.word) && entry.category && LEVELS.has(entry.level));
-  if (!valid.length) throw new Error("The CSV has no valid words.");
+  })).filter(entry => /^[A-Z]+$/.test(entry.word) && entry.category && entry.level === expectedLevel);
+  if (!valid.length) throw new Error(`${expectedLevel} CSV has no valid words.`);
   return valid;
 }
 
@@ -357,9 +357,13 @@ document.querySelector("#year").textContent = String(new Date().getFullYear());
 
 async function initialize() {
   try {
-    const response = await fetch("words.csv", { cache: "no-store" });
-    if (!response.ok) throw new Error(`Could not load words.csv (${response.status}).`);
-    entries = readEntries(await response.text());
+    const lists = await Promise.all([...LEVELS].map(async level => {
+      const filename = `words-${level.toLowerCase()}.csv`;
+      const response = await fetch(filename, { cache: "no-store" });
+      if (!response.ok) throw new Error(`Could not load ${filename} (${response.status}).`);
+      return readEntries(await response.text(), level);
+    }));
+    entries = lists.flat();
     for (const option of elements.difficulty.options) {
       if (option.value) option.disabled = !entries.some(entry => entry.level === option.value);
     }
@@ -369,7 +373,7 @@ async function initialize() {
   } catch (error) {
     elements.difficulty.disabled = true;
     elements.mode.disabled = true;
-    elements.setupMessage.textContent = `${error.message} Serve this folder over HTTP to play.`;
+    elements.setupMessage.textContent = `${error.message} Make sure all six CSV files are available over HTTP.`;
     elements.setupMessage.classList.add("error");
   }
 }
