@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#102441">
+    <meta name="description" content="An English word guessing game hidden inside a letter minesweeper board.">
+    <title>Word Sweeper</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="brand" aria-label="Word Sweeper">
+          <span class="brand-mark" aria-hidden="true">✳</span>
+          <span>WORD<br>SWEEPER</span>
+        </div>
+        <div class="header-right">
+          <span class="header-note">A word is hiding in plain sight.</span>
+          <button type="button" id="about-button" class="about-button">About</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <div>
+            <p class="edition">The letter puzzle</p>
+            <h1 id="page-title">Every letter<br>leaves a clue<span class="period">.</span></h1>
+          </div>
+          <p class="intro-copy">Open the field. Read the numbers. Find the hidden word.</p>
+        </section>
+
+        <section class="game" aria-label="Word Sweeper game">
+          <div id="setup" class="setup">
+            <div class="setup-heading">
+              <p class="setup-kicker">Before you begin</p>
+              <h2>Choose your field</h2>
+              <p>Pick a letter layout and learning level. Both layouts use the same eight-neighbor rule.</p>
+            </div>
+            <div class="setup-controls">
+              <div class="select-block">
+                <label class="meta-label" for="mode">Board layout</label>
+                <select id="mode" name="mode">
+                  <option value="qwerty" selected>QWERTY keyboard</option>
+                  <option value="alphabet">7 × 4 alphabet grid</option>
+                </select>
+              </div>
+              <div class="select-block">
+                <label class="meta-label" for="difficulty">Difficulty</label>
+                <select id="difficulty" name="difficulty">
+                  <option value="">Any level</option>
+                  <option value="A1" selected>A1 · Beginner</option>
+                  <option value="A2">A2 · Elementary</option>
+                  <option value="B1">B1 · Intermediate</option>
+                  <option value="B2">B2 · Upper intermediate</option>
+                  <option value="C1">C1 · Advanced</option>
+                  <option value="C2">C2 · Proficient</option>
+                </select>
+              </div>
+              <button type="button" id="start-button" class="start-button" disabled>Start game <span aria-hidden="true">↗</span></button>
+            </div>
+            <p id="setup-message" class="setup-message" role="status" aria-live="polite">Loading word list…</p>
+          </div>
+
+          <div id="round" hidden>
+          <div class="puzzle-bar">
+            <div class="clue-block">
+              <span class="meta-label">Category</span>
+              <strong id="category">Loading…</strong>
+            </div>
+            <div class="clue-block">
+              <span class="meta-label">Word length</span>
+              <strong id="length">—</strong>
+            </div>
+            <div class="clue-block mode-clue">
+              <span class="meta-label">Field</span>
+              <strong id="mode-label">—</strong>
+            </div>
+            <div class="puzzle-actions">
+              <button type="button" id="change-button" class="text-button">Change setup</button>
+              <button type="button" id="next-button" class="text-button">Skip puzzle <span aria-hidden="true">↗</span></button>
+            </div>
+          </div>
+
+          <div id="board-frame" class="board-frame">
+            <div class="board-topline">
+              <span id="board-mode-label">QWERTY FIELD</span>
+              <span class="board-progress"><span id="opened-count">0 / 26 opened</span><span id="flag-count">0 flags</span></span>
+            </div>
+            <div id="board" class="board" role="group" aria-label="Letter minefield"></div>
+            <div class="legend" aria-label="Board legend">
+              <span><i class="legend-tile safe" aria-hidden="true">3</i> Nearby letters</span>
+              <span><i class="legend-tile mine" aria-hidden="true">✳</i> In the word</span>
+              <span><i class="legend-tile hidden" aria-hidden="true">A</i> Unopened</span>
+              <span><i class="legend-tile flagged" aria-hidden="true">⚑</i> Right-click to flag</span>
+            </div>
+          </div>
+
+          <form id="guess-form" class="guess-form" autocomplete="off">
+            <div class="guess-heading">
+              <label for="guess-input">Your answer</label>
+              <span id="guess-count">0 guesses</span>
+            </div>
+            <div class="guess-row">
+              <input id="guess-input" name="guess" type="text" inputmode="text" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="Type the hidden word" maxlength="32" aria-describedby="message">
+              <button id="guess-button" type="submit">Check word <span aria-hidden="true">↗</span></button>
+            </div>
+            <div class="form-footer">
+              <p id="message" class="message" role="status" aria-live="polite">A number counts all nearby letters in the answer, including repeats.</p>
+              <button type="button" id="give-up-button" class="give-up-button">Give up &amp; reveal answer</button>
+            </div>
+          </form>
+          </div>
+        </section>
+
+        <section class="how-to" aria-labelledby="how-title">
+          <h2 id="how-title">How to play</h2>
+          <div class="how-grid">
+            <p><b>01</b><span>Choose a field, then open any letter. A number counts answer letters in all eight neighboring cells.</span></p>
+            <p><b>02</b><span>Right-click to flag a letter (or press F on a focused tile). Empty cells open their neighbors.</span></p>
+            <p><b>03</b><span>Use the category and length to guess the word. A wrong answer never ends the round.</span></p>
+          </div>
+        </section>
+      </main>
+
+      <footer>WORD SWEEPER <span>© <span id="year"></span></span></footer>
+    </div>
+
+    <dialog id="about-dialog" class="about-dialog" aria-labelledby="about-title">
+      <div class="dialog-top">
+        <span class="dialog-symbol" aria-hidden="true">✳</span>
+        <button type="button" id="close-about" class="close-button" aria-label="Close About">×</button>
+      </div>
+      <h2 id="about-title">About Word Sweeper</h2>
+      <p>Open letters on a field, follow the clues, and guess the hidden word. Difficulty uses approximate CEFR-inspired word groups for this game.</p>
+      <dl>
+        <div><dt>Created by</dt><dd><a href="https://sayonara-natsu.com/" target="_blank" rel="noopener noreferrer">いんく</a></dd></div>
+        <div><dt>Inspired by</dt><dd><a href="https://www.youtube.com/watch?v=jDikQq1W5eY" target="_blank" rel="noopener noreferrer" lang="ja">【企画大爆発】パズルを解いて言葉を当てろ！五十音表マインスイーパ</a><span class="source-author">By QuizKnock</span></dd></div>
+      </dl>
+    </dialog>
+  </body>
+</html>
