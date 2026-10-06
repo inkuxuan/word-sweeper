@@ -28,4 +28,4 @@ Then open `http://localhost:8000`.
 
 ## Deploy to GitHub Pages
 
-This repository is designed for GitHub Pages with **Deploy from a branch**, using `main` and `/ (root)`. It uses relative file paths and needs no build step. The `CNAME` file records the intended custom domain `en-mine-sweeper.sayonara-natsu.com`; the domain also needs to be configured in the repository's Pages settings and DNS before the custom address will work.
+GitHub Pages publishes this repository from `main` and `/ (root)` at `https://inkuxuan.github.io/word-sweeper/`. It uses relative file paths and needs no build step. The planned custom domain is `en-mine-sweeper.sayonara-natsu.com`. To use it later, configure a DNS CNAME record pointing to `inkuxuan.github.io`, then add the domain in the repository's Pages settings.
