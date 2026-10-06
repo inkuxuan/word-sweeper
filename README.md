@@ -15,17 +15,3 @@ Inspired by QuizKnock's [【企画大爆発】パズルを解いて言葉を当�
 Edit the file for the relevant level: `words-a1.csv`, `words-a2.csv`, `words-b1.csv`, `words-b2.csv`, `words-c1.csv`, or `words-c2.csv`. Each file starts with `word,category,level`; each following row contains one candidate word, its category, and the level matching that file. Words use English letters A–Z, with no spaces or punctuation. Categories may contain spaces; quote a category if it contains a comma. Invalid rows are ignored. The game loads all six files, randomly chooses a word from the selected level, and avoids repeating the immediately previous row when possible.
 
 The included word list has at least 100 words at each of the six levels. The levels are approximate groups made for this game, inspired by the [CEFR's six levels](https://www.coe.int/en/web/common-european-framework-reference-languages/introduction-and-context). They are not official word-by-word CEFR ratings. A word's learning level can also vary by meaning, as described by the [English Vocabulary Profile](https://englishprofile.org/?menu=english-vocabulary-profile).
-
-## Run locally
-
-Because the browser loads the six CSV files with `fetch`, serve the directory over HTTP instead of opening `index.html` as a local file. For example:
-
-```sh
-python -m http.server 8000
-```
-
-Then open `http://localhost:8000`.
-
-## Deploy to GitHub Pages
-
-GitHub Pages publishes this repository from `main` and `/ (root)` at `https://inkuxuan.github.io/word-sweeper/`. It uses relative file paths and needs no build step. The planned custom domain is `en-mine-sweeper.sayonara-natsu.com`. To use it later, configure a DNS CNAME record pointing to `inkuxuan.github.io`, then add the domain in the repository's Pages settings.
