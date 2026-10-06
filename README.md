@@ -14,7 +14,7 @@ Inspired by QuizKnock's [【企画大爆発】パズルを解いて言葉を当�
 
 Edit `words.csv`. Its first row must be `word,category,level`; each following row is one candidate word, its category, and one difficulty level (`A1`, `A2`, `B1`, `B2`, `C1`, or `C2`). Words use English letters A–Z, with no spaces or punctuation. Categories may contain spaces; quote a category if it contains a comma. Invalid rows are ignored. The game randomly chooses a word from the selected level and avoids repeating the immediately previous row when possible. Levels without words are disabled in the menu.
 
-The included levels are approximate groups made for this game, inspired by the [CEFR's six levels](https://www.coe.int/en/web/common-european-framework-reference-languages/introduction-and-context). They are not official word-by-word CEFR ratings. A word's learning level can also vary by meaning, as described by the [English Vocabulary Profile](https://englishprofile.org/?menu=english-vocabulary-profile).
+The included word list has at least 100 words at each of the six levels. The levels are approximate groups made for this game, inspired by the [CEFR's six levels](https://www.coe.int/en/web/common-european-framework-reference-languages/introduction-and-context). They are not official word-by-word CEFR ratings. A word's learning level can also vary by meaning, as described by the [English Vocabulary Profile](https://englishprofile.org/?menu=english-vocabulary-profile).
 
 ## Run locally
 
